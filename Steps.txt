@@ -1,0 +1,32 @@
+Read
+1. Check if we have the address the CPU wants
+  1.1 Partition the CPU adderess into CPU Tag, CPU Set, CPU Offset
+	1.2 Look inside of sets[CPU Set] if CPU Tag == A Way's Tag
+  1.2.1 Also check that Way is valid
+2. If not go read that block from memory
+  2.1 Check the dirty bit of the oldest block in that way, if 1 write block back to memory where found it
+	  2.1.1 Where we found it == Oldest Way's Tag Bits:CPU's Set Bits
+  2.2 Set valid bit to 1 and dirty bit to 0, Oldest Way's Tag Bits set to CPU's Tag Bits
+3. Update the ages of the ways inside of the set we accessed
+  3.1 If age of way accessed == my age , my age = 0
+	3.2 Else if age of way accessed < my_age, my_age++
+	3.3 Else my_age = my_age
+4. Give back the value to the CPU
+  4.1 sets[CPU Set].way[Matching Tag or Youngest][CPU Offset]
+
+Write
+1. Check if we have the address the CPU wants
+  1.1 Partition the CPU adderess into CPU Tag, CPU Set, CPU Offset
+	1.2 Look inside of sets[CPU Set] if CPU Tag == A Way's Tag
+  1.2.1 Also check that Way is valid
+2. If not go read that block from memory
+  2.1 Check the dirty bit of the oldest block in that way, if 1 write block back to memory where found it
+	  2.1.1 Where we found it == Oldest Way's Tag Bits:CPU's Set Bits
+  2.2 Set valid bit to 1 and dirty bit to 0, Oldest Way's Tag Bits set to CPU's Tag Bits
+3. Update the ages of the ways inside of the set we accessed
+  3.1 If age of way accessed == my age , my age = 0
+	3.2 Else if age of way accessed < my_age, my_age++
+	3.3 Else my_age = my_age
+4. Give back the value to the CPU
+  4.1 Write the value into sets[CPU Set].way[Matching Tag or Youngest][CPU Offset]
+	4.2 Set dirty to bit 1
